@@ -1,15 +1,23 @@
 import './App.css';
 import { useEffect, useState } from 'react';
-import fetchData from './services/request';
+import fetchData from './services/blog';
 import PostList from './components/PostList';
 
 function App() {
   const [posts, setPosts] = useState([])
+  const [hasError, setHasError] = useState(false)
+  const [isLoading, setIsLoading] = useState()
 
   const getPost = () => {
+    setIsLoading(true)
+
     fetchData()
-      .then((response) => {
-        setPosts(response)
+      .then((newPosts) => {
+        setIsLoading(false)
+        setPosts(newPosts)
+      })
+      .catch((error) => {
+        setHasError(true)
       })
   }
 
@@ -18,7 +26,11 @@ function App() {
   }, [])
 
   return (
-    <PostList posts={posts}/>
+    <>
+      {!hasError && !isLoading && <PostList posts={posts}/>}
+      {hasError && <h2>Failed to load posts.</h2>}
+      {isLoading && <h2>Loading posts...</h2>}
+    </>
   );
 }
 
