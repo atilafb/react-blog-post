@@ -1,7 +1,7 @@
-import api from '../services/api'
+import api from './api'
 
-const totalPosts = 95
-const pageSize = 20
+const TOTAL_POSTS = 95
+const PAGE_SIZE = 20
 
 const arrayOfPages = (total, size) => {
   const totalPages = total / size;
@@ -14,18 +14,15 @@ const arrayOfPages = (total, size) => {
   ].filter(Boolean);
 }
 
-const fetchData = () => arrayOfPages(totalPosts, pageSize).map(
+const fetchData = () => arrayOfPages(TOTAL_POSTS, PAGE_SIZE).map(
   (maxPageLength, index) => () => {
-    return api.get(`/posts?`, {
+    return api.get('/posts', {
       params: {
-        _start: index * pageSize,
+        _start: index * PAGE_SIZE,
         _limit: maxPageLength,
       }
     })
       .then(res => res.data)
-      .catch((error) => {
-        throw new Error(`Failed loading posts on page ${index + 1}`)
-      })
   }
 ).reduce(
   (chain, listPostFn) => chain.then((acc) => listPostFn().then((res) => [...acc, ...res])),
