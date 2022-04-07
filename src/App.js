@@ -28,8 +28,8 @@ function App() {
   return (
     <>
       {!hasError && !isLoading && <PostList posts={posts}/>}
+      {!hasError && isLoading && <h2>Loading posts...</h2>}
       {hasError && <h2>Failed to load posts.</h2>}
-      {isLoading && <h2>Loading posts...</h2>}
     </>
   );
 }
