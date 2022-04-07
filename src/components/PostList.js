@@ -1,21 +1,6 @@
-import { useEffect, useState } from 'react';
-import fetchData from '../services/request';
 import Post from './Post'
 
-function PostList() {
-  const [posts, setPosts] = useState([])
-
-  const getPost = () => {
-    fetchData()
-      .then((response) => {
-        setPosts(response)
-      })
-  }
-
-  useEffect(() => {
-    getPost()
-  }, [])
-
+function PostList({ posts }) {
   return (
     <>
       {posts.map((post) => {
