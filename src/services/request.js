@@ -16,8 +16,6 @@ const arrayOfPages = (total, size) => {
 
 const fetchData = () => arrayOfPages(totalPosts, pageSize).map(
   (maxPageLength, index) => () => {
-    console.log(`Calling ${index}`);
-    console.log(`index: ${index} and pageSize: ${pageSize}. Index times pageSize: ${index * pageSize}`)
     return api.get(`/posts?`, {
       params: {
         _start: index * pageSize,
