@@ -22,11 +22,20 @@ const fetchData = () => arrayOfPages(TOTAL_POSTS, PAGE_SIZE).map(
         _limit: maxPageLength,
       }
     })
-      .then(res => res.data)
+      .then(posts => posts.data)
+      .then((page) => {
+        return page.map((post) => {
+          return api.get(`/posts/${post.id}/comments`)
+            .then((resComments) => {
+              return { ...post, comments: resComments.data }
+            })
+        })
+      })
+      .then(res => Promise.all(res))
   }
 ).reduce(
   (chain, listPostFn) => chain.then((acc) => listPostFn().then((res) => [...acc, ...res])),
   Promise.resolve([]));
 
-  
+
 export default fetchData;
