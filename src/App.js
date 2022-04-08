@@ -6,7 +6,7 @@ import PostList from './components/PostList';
 function App() {
   const [posts, setPosts] = useState([])
   const [hasError, setHasError] = useState(false)
-  const [isLoading, setIsLoading] = useState()
+  const [isLoading, setIsLoading] = useState(false)
 
   const getPost = () => {
     setIsLoading(true)
@@ -17,6 +17,7 @@ function App() {
         setPosts(newPosts)
       })
       .catch((error) => {
+        setIsLoading(false)
         setHasError(true)
       })
   }
