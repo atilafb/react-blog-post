@@ -26,11 +26,11 @@ const fetchUsers = (posts) => {
     return post.userId
   }))
 
-  const promises = Array.from(uniqueUsers).map((userId) => {
+  const userPromises = Array.from(uniqueUsers).map((userId) => {
     return fetchUser(userId)
   })
 
-  return Promise.all(promises)
+  return Promise.all(userPromises)
   .then((users) => {
     return posts.map((post) => {
       const user = users.find(user => user.id === post.userId)
@@ -39,30 +39,38 @@ const fetchUsers = (posts) => {
   })
 }
 
+const fetchPosts = ({ start, limit }) => {
+  return api.get('/posts', {
+    params: {
+      _start: start,
+      _limit: limit
+    }
+  })
+    .then(posts => posts.data)
+}
+
+const fetchPostsComments = (posts) => {
+  const commentsPromises = posts.map((post) => {
+    return api.get(`/posts/${post.id}/comments`)
+      .then(({ data: comments }) => {
+        return { ...post, comments }
+      })
+  })
+  return Promise.all(commentsPromises)
+}
 
 const fetchData = () => arrayOfPages(TOTAL_POSTS, PAGE_SIZE).map(
   (maxPageLength, index) => () => {
-    return api.get('/posts', {
-      params: {
-        _start: index * PAGE_SIZE,
-        _limit: maxPageLength,
-      }
+    return fetchPosts({
+      start: index * PAGE_SIZE,
+      limit: maxPageLength
     })
-      .then(posts => posts.data)
-      .then((page) => {
-        return page.map((post) => {
-          return api.get(`/posts/${post.id}/comments`)
-            .then((resComments) => {
-              return { ...post, comments: resComments.data }
-            })
-        })
-      })
-      .then(res => Promise.all(res))
+      .then(posts => fetchPostsComments(posts))
   }
 ).reduce(
   (chain, listPostFn) => chain.then((acc) => listPostFn().then((res) => [...acc, ...res])),
   Promise.resolve([]))
   .then((allPosts) => fetchUsers(allPosts))
 
-
+  
 export default fetchData;
