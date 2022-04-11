@@ -62,7 +62,7 @@ const fetchData = () => arrayOfPages(TOTAL_POSTS, PAGE_SIZE).map(
 ).reduce(
   (chain, listPostFn) => chain.then((acc) => listPostFn().then((res) => [...acc, ...res])),
   Promise.resolve([]))
-  .then((posts) => fetchUsers(posts))
+  .then((allPosts) => fetchUsers(allPosts))
 
 
 export default fetchData;
