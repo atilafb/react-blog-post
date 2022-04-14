@@ -29,10 +29,10 @@ const fetchUsers = async (posts) => {
   })
 
   const users = await Promise.all(userPromises)
-    return posts.map((post) => {
-      const user = users.find(user => user.id === post.userId)
-      return {...post, user}
-    })
+  return posts.map((post) => {
+    const user = users.find(user => user.id === post.userId)
+    return { ...post, user }
+  })
 }
 
 const fetchPosts = async ({ start, limit }) => {
@@ -46,26 +46,36 @@ const fetchPosts = async ({ start, limit }) => {
 }
 
 const fetchPostsComments = (posts) => {
-  const commentsPromises = posts.map( async (post) => {
+  const commentsPromises = posts.map(async (post) => {
     const commentsObj = await api.get(`/posts/${post.id}/comments`)
     const comments = commentsObj.data
-        return { ...post, comments}
+    return { ...post, comments }
   })
   return Promise.all(commentsPromises)
 }
 
-const fetchData = () => arrayOfPages(TOTAL_POSTS, PAGE_SIZE).map(
-  (maxPageLength, index) => async () => {
+const fetchData = async () => {
+  const pagesArray = arrayOfPages(TOTAL_POSTS, PAGE_SIZE)
+
+  const postWithCommentsPromisesFn = pagesArray.map((maxPageLength, index) => async () => {
     const posts = await fetchPosts({
       start: index * PAGE_SIZE,
       limit: maxPageLength
     })
     return fetchPostsComments(posts)
-  }
-).reduce(
-  (chain, listPostFn) => chain.then((acc) => listPostFn().then((res) => [...acc, ...res])),
-  Promise.resolve([]))
-  .then((allPosts) => fetchUsers(allPosts))
+  })
 
-  
+  const allPosts = await postWithCommentsPromisesFn.reduce(
+    async (chain, listPostFn) => {
+      const acc = await chain
+      const res = await listPostFn()
+
+      return [...acc, ...res]
+    },
+    Promise.resolve([])
+  )
+  return await fetchUsers(allPosts)
+}
+
+
 export default fetchData;
