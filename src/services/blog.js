@@ -14,6 +14,31 @@ const arrayOfPages = (total, size) => {
   ].filter(Boolean);
 }
 
+const fetchUser = (userId) => {
+  return api.get(`/users/${userId}`)
+  .then((resUsers) => {
+    return resUsers.data
+  })
+}
+
+const fetchUsers = (posts) => {
+  const uniqueUsers = new Set(posts.map((post) => {
+    return post.userId
+  }))
+
+  const userPromises = Array.from(uniqueUsers).map((userId) => {
+    return fetchUser(userId)
+  })
+
+  return Promise.all(userPromises)
+  .then((users) => {
+    return posts.map((post) => {
+      const user = users.find(user => user.id === post.userId)
+      return {...post, user}
+    })
+  })
+}
+
 const fetchPosts = ({ start, limit }) => {
   return api.get('/posts', {
     params: {
@@ -44,7 +69,8 @@ const fetchData = () => arrayOfPages(TOTAL_POSTS, PAGE_SIZE).map(
   }
 ).reduce(
   (chain, listPostFn) => chain.then((acc) => listPostFn().then((res) => [...acc, ...res])),
-  Promise.resolve([]));
+  Promise.resolve([]))
+  .then((allPosts) => fetchUsers(allPosts))
 
   
 export default fetchData;
