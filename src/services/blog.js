@@ -14,11 +14,9 @@ const arrayOfPages = (total, size) => {
   ].filter(Boolean);
 }
 
-const fetchUser = (userId) => {
-  return api.get(`/users/${userId}`)
-  .then((resUsers) => {
-    return resUsers.data
-  })
+const fetchUser = async (userId) => {
+  const users = await api.get(`/users/${userId}`)
+  return users.data
 }
 
 const fetchUsers = (posts) => {
@@ -39,14 +37,14 @@ const fetchUsers = (posts) => {
   })
 }
 
-const fetchPosts = ({ start, limit }) => {
-  return api.get('/posts', {
+const fetchPosts = async ({ start, limit }) => {
+  const posts = await api.get('/posts', {
     params: {
       _start: start,
       _limit: limit
     }
-  })
-    .then(posts => posts.data)
+  });
+  return posts.data;
 }
 
 const fetchPostsComments = (posts) => {
