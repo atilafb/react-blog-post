@@ -30,7 +30,6 @@ function App() {
   }, [])
 
   return (
-    <>
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <TextBar>Blog Post</TextBar>
@@ -38,7 +37,6 @@ function App() {
       {!hasError && isLoading && <h2>Loading posts...</h2>}
       {hasError && <h2>Failed to load posts.</h2>}
     </ThemeProvider>
-    </>
   );
 }
 
