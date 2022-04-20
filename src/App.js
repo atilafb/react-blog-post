@@ -32,7 +32,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <TextBar>Blog Post</TextBar>
+      <TextBar>
+        <h1>The Blog Post</h1>
+      </TextBar>
       {!hasError && !isLoading && <PostList posts={posts}/>}
       {!hasError && isLoading && <h2>Loading posts...</h2>}
       {hasError && <h2>Failed to load posts.</h2>}
