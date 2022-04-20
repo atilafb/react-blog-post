@@ -8,7 +8,7 @@ const Card = styled.div`
   border: solid 1px ${({theme}) => theme.colors.black};
   border-radius: ${({theme}) => theme.radii[2]};
   box-shadow: ${({theme}) => `${theme.space[2]} ${theme.space[1]} ${theme.space[1]} ${theme.colors.black}`};
-  background-color: ${({theme}) => theme.colors.blueGrey.variant50};
+  background-color: ${({theme}) => theme.colors.blueGrey[50]};
 `
 
 export default Card;

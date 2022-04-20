@@ -6,7 +6,7 @@ const Container = styled.div`
   justify-content: center;
   margin: ${({theme}) => `${theme.space[2]} ${theme.space[1]} ${theme.space[1]} ${theme.space[1]}`};
   padding: ${({theme}) => theme.space[3]};
-  background-color: ${({theme}) => theme.colors.blueGrey.variant200}
+  background-color: ${({theme}) => theme.colors.blueGrey[200]}
 `
 
 export default Container;

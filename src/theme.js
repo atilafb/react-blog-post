@@ -2,15 +2,15 @@ const colors = {
   black: '#000000',
   white: '#FFFFFF',
   grey: {
-    variant100: '#F5F5F5',
-    variant500: '#9E9E9E',
-    variant700: '#616161'
+    100: '#F5F5F5',
+    500: '#9E9E9E',
+    700: '#616161'
   },
   blueGrey: {
-    variant50: '#ECEFF1',
-    variant200: '#B0BEC5',
-    variant500: '#607D8B',
-    variant700: '#455A64',
+    50: '#ECEFF1',
+    200: '#B0BEC5',
+    500: '#607D8B',
+    700: '#455A64',
   }
 }
 
