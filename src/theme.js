@@ -2,16 +2,22 @@ const colors = {
   black: '#000000',
   white: '#FFFFFF',
   grey: {
-    100: '#F5F5F5',
-    500: '#9E9E9E',
-    700: '#616161'
+    variant100: '#F5F5F5',
+    variant500: '#9E9E9E',
+    variant700: '#616161'
+  },
+  blueGrey: {
+    variant50: '#ECEFF1',
+    variant200: '#B0BEC5',
+    variant500: '#607D8B',
+    variant700: '#455A64',
   }
 }
 
 const space = ['0px', '4px', '8px', '16px', '32px', '64px', '128px', '256px']
 
 const fonts = {
-  body: 'Roboto'
+  body: 'sans-serif'
 }
 
 const fontSizes = ['0px', '8px', '10px', '12px', '14px', '16px', '18px', '20px', '24px', '28px', '32px', '36px', '40px']
