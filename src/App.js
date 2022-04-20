@@ -1,9 +1,10 @@
-import './App.css';
+import { ThemeProvider } from 'styled-components';
+import theme from './theme'
+import TextBar from './components/TextBar';
+import GlobalStyle from './components/GlobalStyle'
 import { useEffect, useState } from 'react';
 import fetchData from './services/blog';
 import PostList from './components/PostList';
-import { ThemeProvider } from 'styled-components';
-import theme from './theme'
 
 function App() {
   const [posts, setPosts] = useState([])
@@ -31,6 +32,8 @@ function App() {
   return (
     <>
     <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <TextBar>Blog Post</TextBar>
       {!hasError && !isLoading && <PostList posts={posts}/>}
       {!hasError && isLoading && <h2>Loading posts...</h2>}
       {hasError && <h2>Failed to load posts.</h2>}
